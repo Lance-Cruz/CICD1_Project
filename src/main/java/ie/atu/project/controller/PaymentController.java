@@ -38,4 +38,9 @@ public class PaymentController {
     public Payment update(@PathVariable Long paymentId, @Valid @RequestBody Payment payment) {
         return service.update(paymentId, payment);
     }
+
+    @DeleteMapping("/{paymentId}")
+    public Payment delete(@PathVariable Long paymentId) {
+        return service.delete(paymentId);
+    }
 }
