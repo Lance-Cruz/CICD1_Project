@@ -5,7 +5,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "payment")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Builder
 public class Payment {
 
     @Id
@@ -15,4 +15,55 @@ public class Payment {
     private String amount;
     private String paymentMethod;
     private String currency;
+
+    public Payment() {
+    }
+
+    public Payment(Long paymentId, Long userID, String amount, String paymentMethod, String currency) {
+        this.paymentId = paymentId;
+        this.userID = userID;
+        this.amount = amount;
+        this.paymentMethod = paymentMethod;
+        this.currency = currency;
+    }
+
+    public Long getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public Long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 }
