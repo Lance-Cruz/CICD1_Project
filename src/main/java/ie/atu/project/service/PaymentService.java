@@ -26,4 +26,16 @@ public class PaymentService {
         return repo.findByPaymentId(id)
                 .orElseThrow(() -> new IllegalArgumentException("Payment ID not found"));
     }
+
+    public Payment update(Long id, Payment p) {
+        Payment existingPayment = repo.findByPaymentId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Payment ID not found"));
+
+        existingPayment.setPaymentId(p.getPaymentId());
+        existingPayment.setUserID(p.getUserID());
+        existingPayment.setAmount(p.getAmount());
+        existingPayment.setPaymentMethod(p.getPaymentMethod());
+        existingPayment.setCurrency(p.getCurrency());
+        return repo.save(existingPayment);
+    }
 }
