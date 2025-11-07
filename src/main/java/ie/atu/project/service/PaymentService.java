@@ -38,4 +38,11 @@ public class PaymentService {
         existingPayment.setCurrency(p.getCurrency());
         return repo.save(existingPayment);
     }
+
+    public Payment delete(Long id) {
+        Payment payment = repo.findByPaymentId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Payment ID not found"));
+        repo.delete(payment);
+        return payment;
+    }
 }
