@@ -33,4 +33,9 @@ public class PaymentController {
     public Payment byPaymentId(@PathVariable Long paymentId) {
         return service.findByPaymentId(paymentId);
     }
+
+    @PutMapping("/{paymentId}")
+    public Payment update(@PathVariable Long paymentId, @Valid @RequestBody Payment payment) {
+        return service.update(paymentId, payment);
+    }
 }
