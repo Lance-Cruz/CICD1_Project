@@ -5,6 +5,7 @@ import ie.atu.project.repository.PaymentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PaymentService {
@@ -27,16 +28,20 @@ public class PaymentService {
                 .orElseThrow(() -> new IllegalArgumentException("Payment ID not found"));
     }
 
-    public Payment update(Long id, Payment p) {
-        Payment existingPayment = repo.findByPaymentId(id)
-                .orElseThrow(() -> new IllegalArgumentException("Payment ID not found"));
-
-        existingPayment.setPaymentId(p.getPaymentId());
-        existingPayment.setUserID(p.getUserID());
-        existingPayment.setAmount(p.getAmount());
-        existingPayment.setPaymentMethod(p.getPaymentMethod());
-        existingPayment.setCurrency(p.getCurrency());
-        return repo.save(existingPayment);
+    public Optional<Payment> update(Long id, Payment p) {
+        Optional<Payment> maybe = repo.findByPaymentId(id);
+        if (maybe.isPresent()) {
+            Payment existing = maybe.get();
+            existing.setPaymentId(p.getPaymentId());
+            existing.setUserID(p.getUserID());
+            existing.setAmount(p.getAmount());
+            existing.setPaymentMethod(p.getPaymentMethod());
+            existing.setCurrency(p.getCurrency());
+            repo.save(existing);
+            return Optional.of(existing);
+        } else {
+            return Optional.empty();
+        }
     }
 
     public Payment delete(Long id) {

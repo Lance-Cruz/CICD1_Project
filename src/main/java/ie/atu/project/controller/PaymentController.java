@@ -4,9 +4,11 @@ import ie.atu.project.model.Payment;
 import ie.atu.project.service.PaymentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/payment")
@@ -35,8 +37,13 @@ public class PaymentController {
     }
 
     @PutMapping("/{paymentId}")
-    public Payment update(@PathVariable Long paymentId, @Valid @RequestBody Payment payment) {
-        return service.update(paymentId, payment);
+    public ResponseEntity<Payment> update(@PathVariable Long paymentId, @Valid @RequestBody Payment payment) {
+        Optional<Payment> maybeUpdated = service.update(paymentId,payment);
+        if (maybeUpdated.isPresent()) {
+            return ResponseEntity.ok(maybeUpdated.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{paymentId}")
