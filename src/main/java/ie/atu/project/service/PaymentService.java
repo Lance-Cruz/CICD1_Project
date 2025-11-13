@@ -23,9 +23,13 @@ public class PaymentService {
         return repo.findAll();
     }
 
-    public Payment findByPaymentId(Long id) {
-        return repo.findByPaymentId(id)
-                .orElseThrow(() -> new IllegalArgumentException("Payment ID not found"));
+    public Optional<Payment> findByPaymentId(Long id) {
+        Optional<Payment> maybe = repo.findByPaymentId(id);
+        if (maybe.isPresent()) {
+            return maybe;
+        } else {
+            return Optional.empty();
+        }
     }
 
     public Optional<Payment> update(Long id, Payment p) {
