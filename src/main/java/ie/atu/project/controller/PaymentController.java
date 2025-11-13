@@ -27,13 +27,19 @@ public class PaymentController {
     }
 
     @GetMapping
-    public List<Payment> all() {
-        return service.findAll();
+    public ResponseEntity<List<Payment>> all() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{paymentId}")
-    public Payment byPaymentId(@PathVariable Long paymentId) {
-        return service.findByPaymentId(paymentId);
+    public ResponseEntity<Payment> byPaymentId(@PathVariable Long paymentId) {
+        Optional<Payment> maybe = service.findByPaymentId(paymentId);
+        if (maybe.isPresent()) {
+            return ResponseEntity.ok(maybe.get());
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/{paymentId}")
