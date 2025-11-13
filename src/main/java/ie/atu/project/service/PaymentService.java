@@ -44,10 +44,13 @@ public class PaymentService {
         }
     }
 
-    public Payment delete(Long id) {
-        Payment payment = repo.findByPaymentId(id)
-                .orElseThrow(() -> new IllegalArgumentException("Payment ID not found"));
-        repo.delete(payment);
-        return payment;
+    public Optional<Payment> delete(Long id) {
+        Optional<Payment> maybe = repo.findByPaymentId(id);
+        if (maybe.isPresent()) {
+            repo.delete(maybe.get());
+            return maybe;
+        } else {
+            return Optional.empty();
+        }
     }
 }
