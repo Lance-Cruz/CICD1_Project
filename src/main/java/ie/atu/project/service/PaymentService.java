@@ -1,5 +1,6 @@
 package ie.atu.project.service;
 
+import ie.atu.project.errorhandling.PaymentNotFound;
 import ie.atu.project.model.Payment;
 import ie.atu.project.repository.PaymentRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class PaymentService {
         if (maybe.isPresent()) {
             return maybe;
         } else {
-            return Optional.empty();
+            throw new PaymentNotFound("The paymentID of " + id + " can not be found");
         }
     }
 
@@ -44,7 +45,7 @@ public class PaymentService {
             repo.save(existing);
             return Optional.of(existing);
         } else {
-            return Optional.empty();
+            throw new PaymentNotFound("The paymentID of " + id + " can not be found");
         }
     }
 
@@ -54,7 +55,7 @@ public class PaymentService {
             repo.delete(maybe.get());
             return maybe;
         } else {
-            return Optional.empty();
+            throw new PaymentNotFound("The paymentID of " + id + " can not be found");
         }
     }
 }
