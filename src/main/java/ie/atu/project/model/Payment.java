@@ -1,6 +1,7 @@
 package ie.atu.project.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
@@ -11,9 +12,13 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
+    @NotBlank(message = "userID is required")
     private Long userID;
+    @NotBlank(message = "Amount is required")
     private String amount;
+    @NotBlank(message = "Payment method is required")
     private String paymentMethod;
+    @NotBlank(message = "Currency is required")
     private String currency;
 
     public Payment() {
