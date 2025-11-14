@@ -2,6 +2,7 @@ package ie.atu.project.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -12,7 +13,7 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
-    @NotBlank(message = "userID is required")
+    @NotNull(message = "userID is required")
     private Long userID;
     @NotBlank(message = "Amount is required")
     private String amount;
