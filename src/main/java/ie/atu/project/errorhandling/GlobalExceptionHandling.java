@@ -25,4 +25,13 @@ public class GlobalExceptionHandling {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorList);
     }
+
+    @ExceptionHandler(PaymentNotFound.class)
+    public ResponseEntity<ExceptionDetails> showDupError(PaymentNotFound de)
+    {
+        ExceptionDetails exceptionDetails = new ExceptionDetails();
+        exceptionDetails.setFieldName("Payment ID");
+        exceptionDetails.setFieldValue(de.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionDetails);
+    }
 }
