@@ -25,6 +25,13 @@ public class Payment {
     public Payment() {
     }
 
+    public Payment(Long userID, String amount, String paymentMethod, String currency) {
+        this.userID = userID;
+        this.amount = amount;
+        this.paymentMethod = paymentMethod;
+        this.currency = currency;
+    }
+
     public Payment(Long paymentId, Long userID, String amount, String paymentMethod, String currency) {
         this.paymentId = paymentId;
         this.userID = userID;
