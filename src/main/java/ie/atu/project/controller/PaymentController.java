@@ -1,5 +1,7 @@
 package ie.atu.project.controller;
 
+import ie.atu.project.dto.NotificationDTO;
+import ie.atu.project.feignclient.NotificationClient;
 import ie.atu.project.model.Payment;
 import ie.atu.project.service.PaymentService;
 import jakarta.validation.Valid;
@@ -15,9 +17,11 @@ import java.util.Optional;
 public class PaymentController {
 
     private final PaymentService service;
+    private final NotificationClient notificationClient;
 
-    public PaymentController(PaymentService service) {
+    public PaymentController(PaymentService service, NotificationClient notificationClient) {
         this.service = service;
+        this.notificationClient = notificationClient;
     }
 
     @PostMapping
@@ -60,5 +64,15 @@ public class PaymentController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/createNotification")
+    public ResponseEntity<NotificationDTO> createNotification(@RequestBody NotificationDTO notificationDTO) {
+        return notificationClient.createNotification(notificationDTO);
+    }
+
+    @GetMapping("/getNotification/{id}")
+    public ResponseEntity<NotificationDTO> getNotificationID(@PathVariable Long id) {
+        return notificationClient.getNotificationID(id);
     }
 }
