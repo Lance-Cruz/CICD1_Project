@@ -1,6 +1,8 @@
 package ie.atu.project.controller;
 
+import ie.atu.project.dto.BookDTO;
 import ie.atu.project.dto.NotificationDTO;
+import ie.atu.project.feignclient.BookClient;
 import ie.atu.project.feignclient.NotificationClient;
 import ie.atu.project.model.Payment;
 import ie.atu.project.service.PaymentService;
@@ -18,10 +20,12 @@ public class PaymentController {
 
     private final PaymentService service;
     private final NotificationClient notificationClient;
+    private final BookClient bookClient;
 
-    public PaymentController(PaymentService service, NotificationClient notificationClient) {
+    public PaymentController(PaymentService service, NotificationClient notificationClient, BookClient bookClient) {
         this.service = service;
         this.notificationClient = notificationClient;
+        this.bookClient = bookClient;
     }
 
     @PostMapping
@@ -74,5 +78,10 @@ public class PaymentController {
     @GetMapping("/getNotification/{id}")
     public ResponseEntity<NotificationDTO> getNotificationID(@PathVariable Long id) {
         return notificationClient.getNotificationID(id);
+    }
+
+    @GetMapping("/getBook/{id}")
+    public BookDTO getBookID(@PathVariable Long id) {
+        return bookClient.getBookID(id);
     }
 }
