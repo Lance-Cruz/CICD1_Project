@@ -95,7 +95,24 @@ public class  PaymentControllerTest {
     }
 
     @Test
-    void deletePayment() {
+    void deletePayment() throws Exception {
+        Payment p = new Payment(1L, 1L, "10","Cash", "Euro");
+        when(paymentService.delete(anyLong())).thenReturn(Optional.of(p));
 
+        ObjectMapper mapper = new ObjectMapper();
+        String JsonValue = mapper.writeValueAsString(p);
+        mockMvc.perform(delete("/api/payment/1").contentType(MediaType.APPLICATION_JSON).content(JsonValue))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void deletePayment_NotFound() throws Exception {
+        Payment p = new Payment(null, 1L, "10","Cash", "Euro");
+        when(paymentService.delete(anyLong())).thenReturn(Optional.empty());
+
+        ObjectMapper mapper = new ObjectMapper();
+        String JsonValue = mapper.writeValueAsString(p);
+        mockMvc.perform(delete("/api/payment/1").contentType(MediaType.APPLICATION_JSON).content(JsonValue))
+                .andExpect(status().isNotFound());
     }
 }
