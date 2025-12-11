@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 // For building the HTTP requests
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 // For checking the results of the requests
@@ -46,11 +47,6 @@ public class  PaymentControllerTest {
     }
 
     @Test
-    void getAllPayments() {
-
-    }
-
-    @Test
     void getPaymentById() throws Exception {
         Payment p = new Payment(1L, 1L, "10","Cash", "Euro");
         when(paymentService.findByPaymentId(1L)).thenReturn(Optional.of(p));
@@ -75,8 +71,27 @@ public class  PaymentControllerTest {
     }
 
     @Test
-    void updatePayment() {
+    void updatePayment() throws Exception {
+        Payment p = new Payment(1L, 1L, "10","Cash", "Euro");
+        when(paymentService.update(anyLong(), any(Payment.class))).thenReturn(Optional.of(p));
 
+        ObjectMapper mapper = new ObjectMapper();
+        String JsonValue = mapper.writeValueAsString(p);
+        mockMvc.perform(put("/api/payment/1").contentType(MediaType.APPLICATION_JSON).content(JsonValue))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.amount").value("10"));
+    }
+
+    @Test
+    void updatePayment_NotFound() throws Exception {
+        Payment p = new Payment(null, 1L, "10","Cash", "Euro");
+        when(paymentService.update(anyLong(), any(Payment.class))).thenReturn(Optional.empty());
+
+        ObjectMapper mapper = new ObjectMapper();
+        String JsonValue = mapper.writeValueAsString(p);
+        mockMvc.perform(put("/api/payment/1").contentType(MediaType.APPLICATION_JSON).content(JsonValue))
+                .andExpect(status().isNotFound());
     }
 
     @Test
