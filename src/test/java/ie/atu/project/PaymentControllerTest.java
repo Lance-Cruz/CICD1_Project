@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 // For building the HTTP requests
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 // For checking the results of the requests
@@ -17,6 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -60,7 +62,15 @@ public class  PaymentControllerTest {
     }
 
     @Test
-    void createPayment() {
+    void createPayment() throws Exception {
+        Payment p = new Payment(1L, 1L, "10","Cash", "Euro");
+        when(paymentService.create(any(Payment.class))).thenReturn(p);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String JsonValue = mapper.writeValueAsString(p);
+        mockMvc.perform(post("/api/payment").contentType(MediaType.APPLICATION_JSON).content(JsonValue))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.amount").value("10"));
 
     }
 
