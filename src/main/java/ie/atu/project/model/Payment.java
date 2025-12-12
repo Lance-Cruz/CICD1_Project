@@ -13,8 +13,8 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paymentId;
-    @NotNull(message = "userID is required")
-    private Long userID;
+    @NotNull(message = "bookID is required")
+    private Long bookID;
     @NotBlank(message = "Amount is required")
     private String amount;
     @NotBlank(message = "Payment method is required")
@@ -25,16 +25,16 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(Long userID, String amount, String paymentMethod, String currency) {
-        this.userID = userID;
+    public Payment(Long bookID, String amount, String paymentMethod, String currency) {
+        this.bookID = bookID;
         this.amount = amount;
         this.paymentMethod = paymentMethod;
         this.currency = currency;
     }
 
-    public Payment(Long paymentId, Long userID, String amount, String paymentMethod, String currency) {
+    public Payment(Long paymentId, Long bookID, String amount, String paymentMethod, String currency) {
         this.paymentId = paymentId;
-        this.userID = userID;
+        this.bookID = bookID;
         this.amount = amount;
         this.paymentMethod = paymentMethod;
         this.currency = currency;
@@ -48,12 +48,12 @@ public class Payment {
         this.paymentId = paymentId;
     }
 
-    public Long getUserID() {
-        return userID;
+    public Long getBookID() {
+        return bookID;
     }
 
-    public void setUserID(Long userID) {
-        this.userID = userID;
+    public void setBookID(Long bookID) {
+        this.bookID = bookID;
     }
 
     public String getAmount() {

@@ -38,7 +38,7 @@ public class PaymentService {
         if (maybe.isPresent()) {
             Payment existing = maybe.get();
             existing.setPaymentId(p.getPaymentId());
-            existing.setUserID(p.getUserID());
+            existing.setBookID(p.getBookID());
             existing.setAmount(p.getAmount());
             existing.setPaymentMethod(p.getPaymentMethod());
             existing.setCurrency(p.getCurrency());
