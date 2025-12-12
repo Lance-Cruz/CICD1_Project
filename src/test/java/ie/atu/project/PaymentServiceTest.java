@@ -9,8 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +40,16 @@ public class PaymentServiceTest {
 
     @Test
     void getPayment() {
+        Payment savedPayment = new Payment(1L, 1L, "10", "Cash", "Euro");
 
+        when(paymentRepository.findByPaymentId(1L)).thenReturn(Optional.of(savedPayment));
+
+        Optional<Payment> result = paymentService.findByPaymentId(1L);
+
+        assertTrue(result.isPresent());
+        assertEquals("10", result.get().getAmount());
+
+        verify(paymentRepository, times(1)).findByPaymentId(1L);
     }
 
     @Test
