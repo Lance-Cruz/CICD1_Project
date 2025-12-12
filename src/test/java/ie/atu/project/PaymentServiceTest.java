@@ -1,5 +1,6 @@
 package ie.atu.project;
 
+import ie.atu.project.errorhandling.PaymentNotFound;
 import ie.atu.project.model.Payment;
 import ie.atu.project.repository.PaymentRepository;
 import ie.atu.project.service.PaymentService;
@@ -53,6 +54,15 @@ public class PaymentServiceTest {
     }
 
     @Test
+    void getPayment_notFound() {
+        when(paymentRepository.findByPaymentId(1L)).thenReturn(Optional.empty());
+
+        assertThrows(PaymentNotFound.class, ()-> paymentService.findByPaymentId(1L));
+
+        verify(paymentRepository, times(1)).findByPaymentId(1L);
+    }
+
+    @Test
     void updatePayment() {
         Payment existing = new Payment(1L, 1L, "10", "Cash", "Euro");
         Payment updated = new Payment(1L, 1L, "15", "Cash", "Euro");
@@ -69,6 +79,17 @@ public class PaymentServiceTest {
     }
 
     @Test
+    void updatePayment_notFound() {
+        Payment existing = new Payment(null, 1L, "10", "Cash", "Euro");
+
+        when(paymentRepository.findByPaymentId(1L)).thenReturn(Optional.empty());
+
+        assertThrows(PaymentNotFound.class, ()-> paymentService.update(1L, existing));
+
+        verify(paymentRepository, times(0)).save(existing);
+    }
+
+    @Test
     void deletePayment() {
         Payment existing = new Payment(1L, 1L, "10", "Cash", "Euro");
 
@@ -79,5 +100,16 @@ public class PaymentServiceTest {
         assertTrue(result.isPresent());
 
         verify(paymentRepository,times(1)).delete(existing);
+    }
+
+    @Test
+    void deletePayment_notFound() {
+        Payment existing = new Payment(null, 1L, "10", "Cash", "Euro");
+
+        when(paymentRepository.findByPaymentId(1L)).thenReturn(Optional.empty());
+
+        assertThrows(PaymentNotFound.class, ()-> paymentService.delete(1L));
+
+        verify(paymentRepository, times(0)).delete(existing);
     }
 }
