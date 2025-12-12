@@ -54,7 +54,18 @@ public class PaymentServiceTest {
 
     @Test
     void updatePayment() {
+        Payment existing = new Payment(1L, 1L, "10", "Cash", "Euro");
+        Payment updated = new Payment(1L, 1L, "15", "Cash", "Euro");
 
+        when(paymentRepository.findByPaymentId(1L)).thenReturn(Optional.of(existing));
+        when(paymentRepository.save(any(Payment.class))).thenReturn(updated);
+
+        Optional<Payment> result = paymentService.update(1L, updated);
+
+        assertTrue(result.isPresent());
+        assertEquals("15", result.get().getAmount());
+
+        verify(paymentRepository, times(1)).save(existing);
     }
 
     @Test
