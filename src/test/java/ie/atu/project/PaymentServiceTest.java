@@ -70,6 +70,14 @@ public class PaymentServiceTest {
 
     @Test
     void deletePayment() {
+        Payment existing = new Payment(1L, 1L, "10", "Cash", "Euro");
 
+        when(paymentRepository.findByPaymentId(1L)).thenReturn(Optional.of(existing));
+
+        Optional<Payment> result = paymentService.delete(1L);
+
+        assertTrue(result.isPresent());
+
+        verify(paymentRepository,times(1)).delete(existing);
     }
 }
